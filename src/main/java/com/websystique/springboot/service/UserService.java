@@ -3,7 +3,7 @@ package com.websystique.springboot.service;
 
 import java.util.List;
 
-import com.websystique.springboot.model.User;
+import com.websystique.springboot.entity.User;
 
 public interface UserService {
 	

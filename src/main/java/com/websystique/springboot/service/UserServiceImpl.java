@@ -3,79 +3,67 @@ package com.websystique.springboot.service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
+import com.websystique.springboot.entity.User;
+import com.websystique.springboot.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.websystique.springboot.model.User;
 
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
 
 
 @Service("userService")
-public class UserServiceImpl implements UserService{
-	
-	private static final AtomicLong counter = new AtomicLong();
-	
-	private static List<User> users;
-	
-	static{
-		users= populateDummyUsers();
+public class UserServiceImpl implements UserService {
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Transactional
+	@PostConstruct
+	public void init() {
+		userRepository.save(new com.websystique.springboot.entity.User("Sam",30, 70000));
+		userRepository.save(new com.websystique.springboot.entity.User("Tom",40, 50000));
+		userRepository.save(new com.websystique.springboot.entity.User("Jerome",45, 30000));
 	}
 
-	public List<User> findAllUsers() {
-		return users;
-	}
-	
 	public User findById(long id) {
-		for(User user : users){
-			if(user.getId() == id){
-				return user;
-			}
-		}
-		return null;
-	}
-	
-	public User findByName(String name) {
-		for(User user : users){
-			if(user.getName().equalsIgnoreCase(name)){
-				return user;
-			}
-		}
-		return null;
-	}
-	
-	public void saveUser(User user) {
-		user.setId(counter.incrementAndGet());
-		users.add(user);
+		return userRepository.findById(id);
 	}
 
-	public void updateUser(User user) {
-		int index = users.indexOf(user);
-		users.set(index, user);
+	public User findByName(String name) {
+		return userRepository.findByName(name);
+	}
+
+	public void saveUser(com.websystique.springboot.entity.User user) {
+		userRepository.save(user);
+	}
+
+	public void updateUser(com.websystique.springboot.entity.User user) {
+		userRepository.save(user);
 	}
 
 	public void deleteUserById(long id) {
-		
-		for (Iterator<User> iterator = users.iterator(); iterator.hasNext(); ) {
-		    User user = iterator.next();
-		    if (user.getId() == id) {
-		        iterator.remove();
-		    }
+		for (Iterator<com.websystique.springboot.entity.User> iterator = findAllUsers().iterator(); iterator.hasNext(); ) {
+			com.websystique.springboot.entity.User user = iterator.next();
+			userRepository.delete(user);
 		}
 	}
 
-	public boolean isUserExist(User user) {
+	public boolean isUserExist(com.websystique.springboot.entity.User user) {
 		return findByName(user.getName())!=null;
 	}
-	
+
 	public void deleteAllUsers(){
-		users.clear();
+		userRepository.deleteAll();
 	}
 
-	private static List<User> populateDummyUsers(){
-		List<User> users = new ArrayList<User>();
-		users.add(new User(counter.incrementAndGet(),"Hello World",100, 123456));
-		return users;
+	public List<User> findAllUsers() {
+		return userRepository.findAll();
 	}
+
+
 
 }

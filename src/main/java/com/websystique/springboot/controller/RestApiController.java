@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.websystique.springboot.model.User;
+import com.websystique.springboot.entity.User;
 import com.websystique.springboot.service.UserService;
 import com.websystique.springboot.util.CustomErrorType;
 
@@ -56,7 +56,7 @@ public class RestApiController {
 
 	// -------------------Create a User-------------------------------------------
 
-	@RequestMapping(value = "/user/", method = RequestMethod.POST)
+	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public ResponseEntity<?> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
 		logger.info("Creating User : {}", user);
 
@@ -112,7 +112,7 @@ public class RestApiController {
 
 	// ------------------- Delete All Users-----------------------------
 
-	@RequestMapping(value = "/user/", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/user", method = RequestMethod.DELETE)
 	public ResponseEntity<User> deleteAllUsers() {
 		logger.info("Deleting All Users");
 
