@@ -32,7 +32,7 @@ public class RestApiController {
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public ResponseEntity<String> hellowApplication() {
-        return new ResponseEntity<String>("Hello welcome to Rest API Docker application", HttpStatus.OK);
+        return new ResponseEntity<String>("Hello World, welcome to Rest API Docker application from Avengers", HttpStatus.OK);
     }
 
 	// -------------------Retrieve All Users---------------------------------------------
